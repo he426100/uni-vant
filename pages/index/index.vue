@@ -68,9 +68,9 @@
         </demo-block>
         
         <demo-block title="图标在右侧">
-            <flex-row justify="space-between" wrap>
+            <flex-row>
                 <flex-col auto>span: auto</flex-col>
-                <flex-col><icon type="warn" size="26"/></flex-col>
+                <flex-col><icon type="warn" size="24"  style="margin: 0 5px;"/></flex-col>
             </flex-row>
         </demo-block>
         <!-- #endif -->
