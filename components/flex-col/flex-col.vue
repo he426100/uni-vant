@@ -18,9 +18,6 @@
         
         computed: {
           gutter() {
-              if (this.row.gutter) {
-                  console.log('在这里')
-              }
             return (this.row && Number(this.row.gutter)) || 0;
           },
         
