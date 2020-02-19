@@ -1,11 +1,29 @@
 @import '../van-style/var';
 
 .flex-row {
+  /* #ifndef MP-WEIXIN */
   display: flex;
   
   &::after {
     display: none;
   }
+  /* #endif */
+
+  /* #ifdef MP-WEIXIN */
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  &--flex {
+    display: flex;
+  
+    &::after {
+      display: none;
+    }
+  }
+  /* #endif */
 
   &--justify-center {
     justify-content: center;

@@ -65,3 +65,11 @@ export function toObject(arr) {
     }
     return res;
 }
+
+/**
+ * Hyphenate a camelCase string.
+ */
+const hyphenateRE = /\B([A-Z])/g;
+export const hyphenate = cached((str) => {
+    return str.replace(hyphenateRE, '-$1').toLowerCase();
+});

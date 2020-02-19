@@ -2,27 +2,30 @@
     <demo-section>
         <demo-block title="基本用法">
             <flex-row>
-                <flex-col span="8">span: 8</flex-col>
-                <flex-col span="8">span: 8</flex-col>
-                <flex-col span="8">span: 8</flex-col>
+                <flex-col span="8" custom-class="dark">span: 8</flex-col>
+                <flex-col span="8" custom-class="light">span: 8</flex-col>
+                <flex-col span="8" custom-class="dark">span: 8</flex-col>
             </flex-row>
 
             <flex-row>
-                <flex-col span="4">span: 4</flex-col>
-                <flex-col span="10" offset="4">offset: 4, span: 10</flex-col>
+                <flex-col span="4" custom-class="dark">span: 4</flex-col>
+                <flex-col span="10" offset="4" custom-class="light">offset: 4, span: 10</flex-col>
             </flex-row>
 
-            <flex-row><flex-col offset="12" span="12">offset: 12, span: 12</flex-col></flex-row>
+            <flex-row>
+                <flex-col offset="12" span="12" custom-class="dark">offset: 12, span: 12</flex-col>
+            </flex-row>
         </demo-block>
 
         <demo-block title="设置列元素间距">
             <flex-row gutter="10">
-                <flex-col span="8">span: 8</flex-col>
-                <flex-col span="8">span: 8</flex-col>
-                <flex-col span="8">span: 8</flex-col>
+                <flex-col span="8" custom-class="dark">span: 8</flex-col>
+                <flex-col span="8" custom-class="light">span: 8</flex-col>
+                <flex-col span="8" custom-class="dark">span: 8</flex-col>
             </flex-row>
         </demo-block>
-
+        
+        <!-- #ifndef MP-WEIXIN -->
         <demo-block title="Flex 布局">
             <flex-row type="flex">
                 <flex-col span="6">span: 6</flex-col>
@@ -70,6 +73,7 @@
                 <flex-col><icon type="warn" size="26"/></flex-col>
             </flex-row>
         </demo-block>
+        <!-- #endif -->
     </demo-section>
 </template>
 
@@ -115,4 +119,23 @@
         padding-left: 10rpx;
         padding-right: 10rpx;
     }
+    
+    //#ifdef MP-WEIXIN
+    /deep/ .dark, .light {
+      color: #fff;
+      font-size: 13px;
+      line-height: 30px;
+      text-align: center;
+      margin-bottom: 10px;
+      background-clip: content-box;
+    }
+    
+    /deep/ .dark {
+      background-color: #39a9ed !important;
+    }
+    
+    /deep/ .light {
+      background-color: #66c6f2 !important;
+    }
+    //#endif
 </style>

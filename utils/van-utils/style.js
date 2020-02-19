@@ -1,4 +1,11 @@
-import { cached, extend, toObject } from './index.js';
+import { isObj, cached, extend, toObject, hyphenate } from './index.js';
+
+export function stringifyStyle(value) {
+    if (isObj(value) && !Array.isArray(value)) {
+        return stringifyObject(value);
+    }
+    return '';
+}
 
 export const parseStyleText = cached(function (cssText) {
     const res = {};
@@ -32,4 +39,16 @@ export function normalizeStyleBinding(bindingStyle) {
         return parseStyleText(bindingStyle);
     }
     return bindingStyle;
+}
+
+function stringifyObject(value) {
+    let res = '';
+    for (const key in value) {
+        if (value[key]) {
+            if (res)
+                res += ' ';
+            res += hyphenate(key) + ': ' + value[key] + ';';
+        }
+    }
+    return res;
 }
