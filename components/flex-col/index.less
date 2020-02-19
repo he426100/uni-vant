@@ -1,0 +1,16 @@
+@import '../van-style/var';
+
+.flex-col {
+  box-sizing: border-box;
+}
+
+.flex-col--auto {
+    flex: auto;
+}
+
+.generate-col(24);
+.generate-col(@n, @i: 1) when (@i =< @n) {
+  .flex-col--@{i} { width: @i * 100% / 24; }
+  .flex-col--offset-@{i} { margin-left: @i * 100% / 24; }
+  .generate-col(@n, (@i + 1));
+}
