@@ -18,10 +18,10 @@
         
         computed: {
           gutter() {
-              if (this.$parent.gutter) {
+              if (this.row.gutter) {
                   console.log('在这里')
               }
-            return (this.$parent && Number(this.$parent.gutter)) || 0;
+            return (this.row && Number(this.row.gutter)) || 0;
           },
         
           style() {
@@ -33,7 +33,9 @@
               const { span, offset, auto } = this
               return bem({ [span]: span, auto, [`offset-${offset}`]: offset })
           }
-        }
+        },
+        
+        inject: ['row'],
     }
 </script>
 

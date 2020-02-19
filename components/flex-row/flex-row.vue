@@ -44,7 +44,13 @@
                 const margin = `-${Number(this.gutter) / 2}px`;
                 return this.gutter ? { marginLeft: margin, marginRight: margin } : {}
             }
-        }
+        },
+        
+        provide() {
+        	return {
+        		row: this
+        	}
+        },
     }
 </script>
 
