@@ -88,17 +88,12 @@ Layout 组件提供了`24列栅格`，通过在`Col`上添加`span`属性设置�
 ### 列表页两列布局
 
 ```
-<flex-row justify="space-between" wrap>
-    <flex-col :span="12" class="plr10"></flex-col>
-    <flex-col :span="12" class="plr10"></flex-col>
-    <flex-col :span="12" class="plr10"></flex-col>
+<flex-row justify="space-between" gutter="10" wrap>
+    <flex-col :span="12"></flex-col>
+    <flex-col :span="12"></flex-col>
+    <flex-col :span="12"></flex-col>
     ...
 </flex-row>
-
-.plr10 {
-    padding-left: 5px;
-    padding-right: 5px
-}
 ```
 
 ### 代替float实现图标浮动到右侧
