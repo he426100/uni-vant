@@ -59,7 +59,7 @@
               return stringifyStyle({ color: activeColor })
           },
           lineClasses () {
-              return stringifyStyle(bem('line'))
+              return stringifyClass(bem('line'))
           },
           iconName () {
               return this.steps.activeIcon || 'checked'
