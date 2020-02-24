@@ -9,8 +9,8 @@
 </template>
 
 <script>
-    import { toUniStyle } from '@/utils/'
     import { isDef } from '@/utils/van-utils/'
+    import { stringifyClass } from '@/utils/van-utils/class.js'
     import { BLUE, WHITE } from '@/utils/van-utils/color'
     import useBem from '@/utils/van-utils/use/bem.js'
     
@@ -82,34 +82,34 @@
         
         computed: {
             classes () {
-                return bem()
+                return stringifyClass(bem())
             },
             portionClasses () {
-                return bem('portion', { 'with-pivot': this.showPivot })
+                return stringifyClass(bem('portion', { 'with-pivot': this.showPivot }))
             },
             pivotClasses () {
-                return bem('pivot')
+                return stringifyClass(bem('pivot'))
             },
             portionStyle () {
                 //#ifdef H5
-                return toUniStyle({
+                return {
                   background: this.inactive ? '#cacaca' : this.color,
                   width: ((this.progressWidth - this.pivotWidth) * this.Percentage) / 100 + 'px'
-                })
+                }
                 //#endif
                 //#ifndef H5
-                return toUniStyle({
+                return {
                   background: this.inactive ? '#cacaca' : this.color,
                   width: this.progressWidth
-                })
+                }
                 //#endif
             },
             pivotStyle () {
                 const background = this.inactive ? '#cacaca' : this.color
-                return toUniStyle({
+                return {
                   color: this.textColor,
                   background: this.pivotColor || background
-                })
+                }
             },
             text () {
                 return isDef(this.pivotText) ? this.pivotText : this.Percentage + '%'

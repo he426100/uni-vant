@@ -1,6 +1,6 @@
 <template>
     <button
-        @click="onBtnClick"
+        @click.stop="onBtnClick"
         :disabled="disabled"
         :loading="loading"
         :size="uniSize"
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+    import { stringifyClass } from '@/utils/van-utils/class.js'
     import useBem from '@/utils/van-utils/use/bem.js'
     
     const bem = useBem('van-button')
@@ -60,7 +61,7 @@
         },
         computed: {
             btnClasses () {
-                return bem([
+                return stringifyClass(bem([
                     this.type,
                     this.size,
                     {
@@ -72,10 +73,10 @@
                       square: this.square,
                       'bottom-action': this.bottomAction
                     }
-                ])
+                ]))
             },
             textClasses () {
-                return bem('text')
+                return stringifyClass(bem('text'))
             }
         },
         methods: {

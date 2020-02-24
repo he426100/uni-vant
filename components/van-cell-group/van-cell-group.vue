@@ -5,6 +5,7 @@
 </template>
 
 <script>
+    import { stringifyClass } from '@/utils/van-utils/class.js'
     import useBem from '@/utils/van-utils/use/bem.js'
     
     const bem = useBem('van-cell-group')
@@ -18,7 +19,7 @@
         },
         computed: {
             classes () {
-                return [bem(), { 'van-hairline--top-bottom': this.border }]
+                return stringifyClass([bem(), { 'van-hairline--top-bottom': this.border }])
             }
         }
     }

@@ -6,7 +6,7 @@
         <slot v-if="showTitle" name="title">
             <view :class="titleClasses">
               <text>{{title}}</text>
-              <view v-if="label" class="[bem('label'), labelClass]">{{label}}</view>
+              <view v-if="label" :class="labelClasses">{{label}}</view>
             </view>
         </slot>
         <slot v-if="showValue" name="value">
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+    import { stringifyClass } from '@/utils/van-utils/class.js'
     import { isDef } from '@/utils/van-utils/'
     import CellMixin from '@/mixins/van-mixins/cell.js'
     import RouterLink from '@/mixins/van-mixins/router-link.js'
@@ -38,25 +39,25 @@
         },
         computed: {
           classes () {
-              return bem({
+              return stringifyClass(bem({
                 center: this.center,
                 required: this.required,
                 borderless: !this.border,
                 clickable: this.isLink || this.clickable,
                 [this.size]: this.size
-              })
+              }))
           },
           leftIconClasses () {
-              return bem('left-icon')
+              return stringifyClass(bem('left-icon'))
           },
           titleClasses () {
-              return [bem('title'), this.titleClass]
+              return stringifyClass([bem('title'), this.titleClass])
           },
           valueClasses () {
-              return [bem('value', { alone: !this.$slots.title && !this.title }), this.valueClass]
+              return stringifyClass([bem('value', { alone: !this.$slots.title && !this.title }), this.valueClass])
           },
           rightIconClasses () {
-              return bem('right-icon')
+              return stringifyClass(bem('right-icon'))
           },
           showTitle () {
             return this.$slots.title || isDef(this.title)
@@ -66,6 +67,9 @@
           },
           arrowIcon () {
               return this.arrowDirection ? `arrow-${this.arrowDirection}` : 'arrow'
+          },
+          labelClasses () {
+              return stringifyClass([bem('label'), this.labelClass])
           }
         },
         methods: {

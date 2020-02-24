@@ -16,6 +16,8 @@
 </template>
 
 <script>
+    import isSrc from '@/utils/van-utils/validate/src.js'
+    
     export default {
         props: {
           name: String,
@@ -26,6 +28,12 @@
             type: String,
             default: 'van-icon'
           }
+        },
+        
+        computed: {
+            urlIcon () {
+                return isSrc(this.name)
+            }
         }
     }
 </script>

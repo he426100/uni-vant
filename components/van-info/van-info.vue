@@ -1,5 +1,5 @@
 <template>
-    <view v-if="isDef(info)" :class="classes">
+    <view v-if="isInfo" :class="classes">
       {{info}}
     </view>
 </template>
@@ -17,6 +17,9 @@
         computed: {
             classes () {
                 return bem()
+            },
+            isInfo () {
+                return isDef(this.info)
             }
         }
     }
