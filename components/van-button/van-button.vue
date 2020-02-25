@@ -88,3 +88,7 @@
         }
     }
 </script>
+
+<style lang="less">
+    @import './index';
+</style>
