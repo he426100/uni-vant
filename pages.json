@@ -10,6 +10,10 @@
             "path" : "pages/index/steps",
             "style" : {}
         }
+        ,{
+            "path" : "pages/index/field",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
