@@ -7,12 +7,53 @@
 			}
 		}
 	    ,{
-            "path" : "pages/index/steps",
-            "style" : {}
+            "path" : "pages/component/steps/steps",
+            "style" : {
+                "navigationBarTitleText": "Steps 步骤条"
+            }
         }
         ,{
-            "path" : "pages/index/field",
-            "style" : {}
+            "path" : "pages/component/field/field",
+            "style" : {
+                "navigationBarTitleText": "Field 输入框"
+            }
+            
+        }
+        ,{
+            "path" : "pages/component/layout/layout",
+            "style" : {
+                "navigationBarTitleText": "Layout 布局"
+            }
+        }
+        ,{
+            "path" : "pages/component/button/button",
+            "style" : {
+                "navigationBarTitleText": "Button 按钮"
+            }
+        }
+        ,{
+            "path" : "pages/component/cell/cell",
+            "style" : {
+                "navigationBarTitleText": "Cell 单元格"
+            }
+        }
+        ,{
+            "path" : "pages/component/icon/icon",
+            "style" : {
+                "navigationBarTitleText": "Icon 图标"
+            }
+        }
+        ,{
+            "path" : "pages/component/progress/progress",
+            "style" : {
+                "navigationBarTitleText": "Progress 进度条"
+            }
+        }
+        ,{
+            "path" : "pages/component/style/style",
+            "style" : {
+                "navigationBarTitleText": "Style 内置样式"
+            }
         }
     ],
 	"globalStyle": {

@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../components/van-style/var';
+@import '../../../components/van-style/var';
 
 .demo-steps {
   .steps-success,

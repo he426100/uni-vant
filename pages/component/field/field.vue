@@ -116,7 +116,7 @@
 </script>
 
 <style lang="less">
-@import '../../components/van-style/var';
+@import '../../../components/van-style/var';
 
 .demo-field {
   padding-bottom: 30px;
