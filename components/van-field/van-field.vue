@@ -1,200 +1,231 @@
 <template>
-    <Cell
-      :icon="leftIcon"
-      :title="label"
-      :center="center"
-      :border="border"
-      :isLink="isLink"
-      :required="required"
-      :class="bem({
-        error: error,
-        disabled: disabled,
-        [`label-${labelAlign}`]: labelAlign,
-        'min-height': type === 'textarea' && !autosize
-      })"
-    >
-      <slot name="leftIcon">
-          <view v-if="showLeftIcon" slot="icon" :class="bem('left-icon')" :onClick="onClickLeftIcon">
-            <van-icon name="leftIcon" />
-          </view>
-      </slot>
-      <!-- 待实现 -->
-    </Cell>
+    <van-cell :icon="leftIcon" :title="label" :center="center" :border="border" :isLink="isLink" :required="required" :class="classes">
+        <view v-if="showLeftIcon" slot="icon" :class="leftIconClasses" @click="onClickLeftIcon">
+            <slot name="leftIcon">
+                <van-icon :name="leftIcon" />
+            </slot>
+        </view>
+        <template slot="title">
+            <slot name="label"></slot>
+        </template>
+        <view :class="bodyClasses">
+            <textarea 
+                v-if="type === 'textarea'"
+                ref="input"
+                :value="value"
+                :placeholder="placeholder"
+                :placeholderStyle="placeholderStyle"
+                :placeholderClass="placeholderClass"
+                :disabled="disabled"
+                :maxlength="maxlength"
+                :focus="focus"
+                :autoHeight="autosize"
+                :fixed="fixed"
+                :cursorSpacing="cursorSpacing"
+                :cursor="cursor"
+                :showConfirmBar="showConfirmBar"
+                :selectionStart="selectionStart"
+                :selectionEnd="selectionEnd"
+                :adjustPosition="adjustPosition"
+                @focus="onFocus"
+                @blur="onBlur"
+                @linechange="onLinechange"
+                @input="onInput"
+                @confirm="onConfirm"/>
+            <input 
+                v-else
+                ref="input"
+                :type="inputType"
+                :password="type === 'password'"
+                :value="value"
+                :placeholder="placeholder"
+                :placeholderStyle="placeholderStyle"
+                :placeholderClass="placeholderClass"
+                :disabled="disabled"
+                :maxlength="maxlength"
+                :cursorSpacing="cursorSpacing"
+                :focus="focus"
+                :confirmType="confirmType"
+                :confirmHold="confirmHold"
+                :cursor="cursor"
+                :selectionStart="selectionStart"
+                :selectionEnd="selectionEnd"
+                :adjustPosition="adjustPosition"
+                @focus="onFocus"
+                @blur="onBlur"
+                @input="onInput"
+                @confirm="onConfirm"/>
+            <van-icon v-if="showClear" name="clear" :class="clearClasses" @click.stop="onClear" />
+            <view v-if="showRightIcon" :class="rightIconClasses" @click="onClickRightIcon">
+                <slot name="rightIcon">
+                    <slot name="icon">
+                        <van-icon :name="rightIcon || icon" />
+                    </slot>
+                </slot>
+            </view>
+            <view v-if="showButton" :class="buttonClasses">
+                <slot name="button" />
+            </view>
+        </view>
+        <view v-if="errorMessage" :class="errorMessageClasses">{{errorMessage}}</view>
+    </van-cell>
 </template>
 
 <script>
     import CellMixin from '@/mixins/van-mixins/cell.js'
     import useBem from '@/utils/van-utils/use/bem.js'
-    
+
     const bem = useBem('van-field')
 
     export default {
         inheritAttrs: false,
-        
+
         mixins: [CellMixin],
-        
+
         props: {
-          error: Boolean,
-          leftIcon: String,
-          rightIcon: String,
-          readonly: Boolean,
-          clearable: Boolean,
-          labelAlign: String,
-          inputAlign: String,
-          onIconClick: Function,
-          autosize: [Boolean, Object],
-          errorMessage: String,
-          type: {
-            type: String,
-            default: 'text'
-          }
+            error: Boolean,
+            leftIcon: String,
+            rightIcon: String,
+            clearable: Boolean,
+            labelAlign: String,
+            inputAlign: String,
+            onIconClick: Function,
+            autosize: [Boolean, Object],
+            errorMessage: String,
+            placeholder: String,
+            placeholderStyle: String,
+            placeholderClass: String,
+            focus: Boolean,
+            fixed: Boolean,
+            cursor: Number,
+            type: {
+                type: String,
+                default: 'text'
+            },
+            disabled: {
+              type: [Boolean, String],
+              default: false
+            },
+            maxlength: {
+                type: Number,
+                default: 140
+            },
+            cursorSpacing: {
+                type: Number,
+                default: 0
+            },
+            showConfirmBar: {
+                type: Boolean,
+                default: true
+            },
+            selectionStart: {
+                type: Number,
+                default: -1
+            },
+            selectionEnd: {
+                type: Number,
+                default: -1
+            },
+            adjustPosition: {
+                type: Boolean,
+                default: true
+            },
+            confirmType: {
+                type: String,
+                default: 'done'
+            },
+            confirmHold: {
+                type: Boolean,
+                default: false
+            }
         },
         
-        data() {
-          return {
-            focused: false
-          };
-        },
-        
-        watch: {
-          value() {
-            this.$nextTick(this.adjustSize);
-          }
-        },
-        
-        mounted() {
-          this.format();
-          this.$nextTick(this.adjustSize);
+        data () {
+            return {
+                isFocus: this.focus
+            }
         },
         
         computed: {
-          showClear() {
-            return (
-              this.clearable && this.focused && this.value !== '' && isDef(this.value) && !this.readonly
-            );
-          },
-        
-          listeners() {
-            return {
-              ...this.$listeners,
-              input: this.onInput,
-              keypress: this.onKeypress,
-              focus: this.onFocus,
-              blur: this.onBlur
-            };
-          },
-          
-          showLeftIcon () {
-            return this.$slots['left-icon'] || this.leftIcon
-          },
-          
-          showRightIcon () {
-              return this.$slots['right-icon'] || this.$slots.icon || this.rightIcon || this.icon
-          }
+            classes() {
+                const { labelAlign } = this
+                return bem({
+                    error: this.error,
+                    disabled: this.disabled,
+                    [`label-${labelAlign}`]: labelAlign,
+                    'min-height': this.type === 'textarea' && !this.autosize
+                });
+            },
+            leftIconClasses () {
+                return bem('left-icon')
+            },
+            rightIconClasses () {
+                return bem('right-icon')
+            },
+            bodyClasses () {
+                return bem('body')
+            },
+            buttonClasses () {
+                return bem('button')
+            },
+            errorMessageClasses () {
+                return bem('error-message')
+            },
+            clearClasses () {
+                return bem('clear')
+            },
+            showClear() {
+                return this.clearable && this.focus && this.value !== '' && isDef(this.value) && !this.disabled
+            },
+            showLeftIcon() {
+                return this.$slots['left-icon'] || this.leftIcon
+            },
+            showRightIcon() {
+                return this.$slots['right-icon'] || this.$slots.icon || this.rightIcon || this.icon
+            },
+            inputType () {
+                return ['text', 'number', 'idcard', 'digit'].indexOf(this.type) === -1 ? 'text' : this.type
+            },
+            showButton () {
+                return this.$slots.button
+            }
         },
-        
+
         methods: {
-          focus() {
-            this.$refs.input && this.$refs.input.focus();
-          },
-        
-          blur() {
-            this.$refs.input && this.$refs.input.blur();
-          },
-        
-          // native maxlength not work when type = number
-          format(target = this.$refs.input) {
-            let { value } = target;
-            const { maxlength } = this.$attrs;
-        
-            if (this.type === 'number' && isDef(maxlength) && value.length > maxlength) {
-              value = value.slice(0, maxlength);
-              target.value = value;
+            onInput(event) {
+                this.$emit('input', event.target.value)
+            },
+            onFocus(event) {
+                this.isFocus = true
+                this.$emit('focus', event)
+            },
+            onBlur(event) {
+                this.isFocus = false
+                this.$emit('blur', event)
+            },
+            onConfirm (e) {
+                this.$emit('confirm', e)
+            },
+            onLinechange (e) {
+                this.$emit('linechange', e)
+            },
+            onClickLeftIcon() {
+                this.$emit('click-left-icon')
+            },
+            onClickRightIcon() {
+                // compatible old version
+                this.$emit('click-icon')
+                this.$emit('click-right-icon')
+                this.onIconClick && this.onIconClick()
+            },
+            onClear(event) {
+                this.$emit('input', '')
+                this.$emit('clear')
             }
-        
-            return value;
-          },
-        
-          onInput(event) {
-            this.$emit('input', this.format(event.target));
-          },
-        
-          onFocus(event) {
-            this.focused = true;
-            this.$emit('focus', event);
-        
-            // hack for safari
-            /* istanbul ignore if */
-            if (this.readonly) {
-              this.blur();
-            }
-          },
-        
-          onBlur(event) {
-            this.focused = false;
-            this.$emit('blur', event);
-          },
-        
-          onClickLeftIcon() {
-            this.$emit('click-left-icon');
-          },
-        
-          onClickRightIcon() {
-            // compatible old version
-            this.$emit('click-icon');
-            this.$emit('click-right-icon');
-            this.onIconClick && this.onIconClick();
-          },
-        
-          onClear(event) {
-            event.preventDefault();
-            this.$emit('input', '');
-            this.$emit('clear');
-          },
-        
-          onKeypress(event) {
-            if (this.type === 'number') {
-              const { keyCode } = event;
-              const allowPoint = String(this.value).indexOf('.') === -1;
-              const isValidKey =
-                (keyCode >= 48 && keyCode <= 57) || (keyCode === 46 && allowPoint) || keyCode === 45;
-              if (!isValidKey) {
-                event.preventDefault();
-              }
-            }
-        
-            // trigger blur after click keyboard search button
-            /* istanbul ignore next */
-            if (this.type === 'search' && event.keyCode === 13) {
-              this.blur();
-            }
-        
-            this.$emit('keypress', event);
-          },
-        
-          adjustSize() {
-            const { input } = this.$refs;
-            if (!(this.type === 'textarea' && this.autosize) || !input) {
-              return;
-            }
-        
-            input.style.height = 'auto';
-        
-            let height = input.scrollHeight;
-            if (isObj(this.autosize)) {
-              const { maxHeight, minHeight } = this.autosize;
-              if (maxHeight) {
-                height = Math.min(height, maxHeight);
-              }
-              if (minHeight) {
-                height = Math.max(height, minHeight);
-              }
-            }
-        
-            if (height) {
-              input.style.height = height + 'px';
-            }
-          }
-        },
+        }
     }
 </script>
+
+<style lang="less">
+    @import './index';
+</style>
