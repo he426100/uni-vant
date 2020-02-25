@@ -6,6 +6,7 @@
 </template>
 
 <script>
+    import { stringifyClass } from '@/utils/van-utils/class.js'
     import useBem from '@/utils/van-utils/use/bem.js'
     
     const bem = useBem('demo-block')
@@ -17,10 +18,10 @@
         },
         computed: {
             classes () {
-                return bem()
+                return stringifyClass(bem())
             },
             titleClasses () {
-                return [bem('title'), this.titleClass]
+                return stringifyClass([bem('title'), this.titleClass])
             },
         }
     }

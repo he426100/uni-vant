@@ -5,6 +5,7 @@
 </template>
 
 <script>
+    import { stringifyClass } from '@/utils/van-utils/class.js'
     import { isDef } from '@/utils/van-utils/'
     import useBem from '@/utils/van-utils/use/bem.js'
     
@@ -16,7 +17,7 @@
         },
         computed: {
             classes () {
-                return bem()
+                return stringifyClass(bem())
             },
             isInfo () {
                 return isDef(this.info)

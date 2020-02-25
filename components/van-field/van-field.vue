@@ -72,6 +72,7 @@
 </template>
 
 <script>
+    import { stringifyClass } from '@/utils/van-utils/class.js'
     import CellMixin from '@/mixins/van-mixins/cell.js'
     import useBem from '@/utils/van-utils/use/bem.js'
 
@@ -149,30 +150,30 @@
         computed: {
             classes() {
                 const { labelAlign } = this
-                return bem({
+                return stringifyClass(bem({
                     error: this.error,
                     disabled: this.disabled,
                     [`label-${labelAlign}`]: labelAlign,
                     'min-height': this.type === 'textarea' && !this.autosize
-                });
+                }));
             },
             leftIconClasses () {
-                return bem('left-icon')
+                return stringifyClass(bem('left-icon'))
             },
             rightIconClasses () {
-                return bem('right-icon')
+                return stringifyClass(bem('right-icon'))
             },
             bodyClasses () {
-                return bem('body')
+                return stringifyClass(bem('body'))
             },
             buttonClasses () {
-                return bem('button')
+                return stringifyClass(bem('button'))
             },
             errorMessageClasses () {
-                return bem('error-message')
+                return stringifyClass(bem('error-message'))
             },
             clearClasses () {
-                return bem('clear')
+                return stringifyClass(bem('clear'))
             },
             showClear() {
                 return this.clearable && this.focus && this.value !== '' && isDef(this.value) && !this.disabled
