@@ -55,6 +55,12 @@
                 "navigationBarTitleText": "Style 内置样式"
             }
         }
+        ,{
+            "path" : "pages/component/tag/tag",
+            "style" : {
+                "navigationBarTitleText": "Tag 标签"
+            }
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

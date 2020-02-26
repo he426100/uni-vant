@@ -54,7 +54,8 @@
                         open: true,
                         pages: [
                             'progress',
-                            'steps'
+                            'steps',
+                            'tag'
                         ]
                     }
                 ],
