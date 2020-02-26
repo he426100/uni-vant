@@ -3,17 +3,15 @@
         <slot name="icon">
             <van-icon v-if="icon" :class="leftIconClasses" :name="icon" />
         </slot>
-        <slot v-if="showTitle" name="title">
-            <view :class="titleClasses">
+        <view v-if="showTitle" :class="titleClasses">
+            <slot name="title">
               <text>{{title}}</text>
-              <view v-if="label" :class="labelClasses">{{label}}</view>
-            </view>
-        </slot>
-        <slot v-if="showValue" name="value">
-            <view :class="valueClasses">
-              <slot><text>{{value || ''}}</text></slot>
-            </view>
-        </slot>
+            </slot>
+            <view v-if="label" :class="labelClasses">{{label}}</view>
+        </view>
+        <view v-if="showValue" :class="valueClasses">
+            <slot><text>{{value || ''}}</text></slot>
+        </view>
         <slot name="rightIcon">
             <van-icon v-if="isLink" :class="rightIconClasses" :name="arrowIcon" />
         </slot>

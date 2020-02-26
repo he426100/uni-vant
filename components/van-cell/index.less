@@ -32,6 +32,12 @@
   &__value {
     flex: 1;
   }
+  
+  &__title {
+      /deep/ .van-tag {
+          display: initial;
+      }
+  }
 
   &__value {
     color: @gray-dark;
