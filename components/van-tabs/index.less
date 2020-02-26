@@ -138,6 +138,18 @@
     .van-tabs__wrap {
       height: @tabs-line-height;
     }
+    
+    .van-tab.van-tab--active:after {
+        content: " ";
+        height: 3px;
+        width: 40%;
+        left: 30%;
+        bottom: 0;
+        position: absolute;
+        z-index: 999;
+        background-color: #2e5bff;
+    }
+    
   }
 
   &--card {
@@ -153,15 +165,4 @@
     flex-shrink: 0;
     box-sizing: border-box;
   }
-}
-
-.van-tab.van-tab--active:after {
-    content: " ";
-    height: 3px;
-    width: 40%;
-    left: 30%;
-    bottom: 0;
-    position: absolute;
-    z-index: 999;
-    background-color: #2e5bff;
 }

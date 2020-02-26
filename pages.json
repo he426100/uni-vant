@@ -61,6 +61,10 @@
                 "navigationBarTitleText": "Tag 标签"
             }
         }
+        ,{
+            "path" : "pages/component/tabs/tabs",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -1,5 +1,5 @@
 <template>
-    <view v-show="selected || animated" :class="classes">
+    <view @click="onClick" v-show="selected || animated" :class="classes">
       <slot />
     </view>
 </template>

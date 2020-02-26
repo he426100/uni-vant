@@ -180,10 +180,12 @@
               if (disabled) {
                 this.$emit('disabled', index, title)
               } else {
+                if (this.curActive != index) {
+                    this.$emit('change', index, title)
+                }
                 this.curActive = index
                 this.$emit('input', this.curActive)
                 this.$emit('click', index, title)
-                this.$emit('change', index, title)
               }
             },
         }

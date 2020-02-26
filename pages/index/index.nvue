@@ -57,6 +57,13 @@
                             'steps',
                             'tag'
                         ]
+                    },{
+                        id: 'navigation',
+                        name: '导航组件',
+                        open: true,
+                        pages: [
+                            'tabs'
+                        ]
                     }
                 ],
                 navigateFlag: false
