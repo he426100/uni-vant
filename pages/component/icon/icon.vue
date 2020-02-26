@@ -1,29 +1,44 @@
 <template>
     <view class="demo-icon">
       <demo-section>
-            <view class="van-tabs van-tabs--line">
-              <view class="van-tabs__wrap van-hairline--top-bottom">
-                  <view class="van-tabs__nav van-tabs__nav--line">
-                      <view v-for="(item, index) in tabs" :key="index" class="van-tab" @click="selectTab(index)" :class="{'van-tab--active': tab == index}">
-                          <text class="van-ellipsis">{{item.title}}</text>
-                      </view>
-                  </view>
-              </view>
-              <view class="van-tabs__content">
-                  <view v-for="(item, index) in tabs" :key="index"  class="van-tab__pane" v-show="tab == index">
-                      <flex-row wrap>
-                        <flex-col
-                          v-for="icon in icons[item.name]"
-                          :key="icon"
-                          span="6"
-                        >
-                          <van-icon :name="icon" />
-                          <text>{{ icon }}</text>
-                        </flex-col>
-                      </flex-row>
-                  </view>
-              </view>
-            </view>
+          <van-tabs v-model="tab" :color="BLUE">
+            <van-tab title="基础图标">
+                <flex-row wrap>
+                  <flex-col
+                    v-for="icon in icons.basic"
+                    :key="icon"
+                    span="6"
+                  >
+                    <van-icon :name="icon" />
+                    <text>{{ icon }}</text>
+                  </flex-col>
+                </flex-row>
+            </van-tab>
+            <van-tab title="线框风格">
+                <flex-row wrap>
+                  <flex-col
+                    v-for="icon in icons.outline"
+                    :key="icon"
+                    span="6"
+                  >
+                    <van-icon :name="icon" />
+                    <text>{{ icon }}</text>
+                  </flex-col>
+                </flex-row>
+            </van-tab>
+            <van-tab title="实底风格">
+                <flex-row wrap>
+                  <flex-col
+                    v-for="icon in icons.filled"
+                    :key="icon"
+                    span="6"
+                  >
+                    <van-icon :name="icon" />
+                    <text>{{ icon }}</text>
+                  </flex-col>
+                </flex-row>
+            </van-tab>  
+          </van-tabs>
       </demo-section>
     </view>
 </template>
