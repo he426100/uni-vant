@@ -33,6 +33,9 @@
     const bem = useBem('van-tabs')
     
     export default {
+        model: {
+            prop: 'active'
+        },
         props: {
             color: String,
             sticky: Boolean,
