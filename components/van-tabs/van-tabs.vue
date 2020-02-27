@@ -176,16 +176,17 @@
         
         methods: {
             onClick(index) {
+              const oldIndex = this.curActive
               const { title, disabled } = this.childrens[index]
               if (disabled) {
                 this.$emit('disabled', index, title)
               } else {
-                if (this.curActive != index) {
-                    this.$emit('change', index, title)
-                }
                 this.curActive = index
-                this.$emit('input', this.curActive)
+                this.$emit('input', index)
                 this.$emit('click', index, title)
+                if (oldIndex != index) {
+                    this.$emit('change', index, title) //先用input事件改变v-modal的值，再触发change事件
+                }
               }
             },
         }
