@@ -151,9 +151,7 @@
         
         watch: {
             active(val) {
-              if (val !== this.curActive) {
-                //console.log('val !== curActive')
-              }
+              this.curActive = val
             },
             
             color(val) {
