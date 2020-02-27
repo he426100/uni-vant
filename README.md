@@ -9,6 +9,7 @@
 - layout
 - style
 - field
-- progres
+- progress
 - steps
 - tag
+- tabs
