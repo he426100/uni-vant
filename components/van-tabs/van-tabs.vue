@@ -10,10 +10,11 @@
           <van-tab-nav
             v-for="(tab, index) in childrens" :key="index"
             :index="index"
+            :data-id="index"
             :title="tab.title"
             :titleClass="tab.titleClass"
             :disabled="tab.disabled"
-            @click.native="onClick(index)" />
+            @click.native="onClick(index)"/>
         </view>
       </view>
       <view ref="content" :class="contentClasses">
@@ -26,6 +27,7 @@
 </template>
 
 <script>
+    import { isDef } from '@/utils/van-utils/index.js'
     import { stringifyClass } from '@/utils/van-utils/class.js'
     import { stringifyStyle } from '@/utils/van-utils/style.js'
     import useBem from '@/utils/van-utils/use/bem.js'
@@ -175,6 +177,17 @@
             }
         },
         
+        created () {
+            this.navListSize = {}
+        },
+        
+        mounted() {
+            this.$nextTick(() => {
+                this.inited = true
+                this.getNavListSize()
+            })
+        },
+
         methods: {
             onClick(index) {
               const oldIndex = this.curActive
@@ -188,8 +201,49 @@
                 if (oldIndex != index) {
                     this.$emit('change', index, title) //先用input事件改变v-modal的值，再触发change事件
                 }
+                /* update nav */
+                const currentSize = this.navListSize[index]
+                currentSize && this.setLine(currentSize.left, currentSize.width)
               }
             },
+            getNavListSize(index) {
+                //MP-WEIXIN || H5 || MP-QQ
+                uni.createSelectorQuery().in(this).selectAll('.van-tab').boundingClientRect((rects) => {
+                    rects.forEach((rect) => {
+                        this.navListSize[rect.dataset.id] = rect
+                    })
+                }).exec();
+                            
+                setTimeout(() => {
+                    this.navListSize[this.curActive] && this.setLine(this.navListSize[this.curActive].left, this.navListSize[this.curActive].width);
+                }, 100)
+            },
+            setLine(navLeft, navWidth) {
+                const shouldAnimate = this.inited
+                this.$nextTick(() => {
+                    const { lineWidth, lineHeight } = this
+                    const width = isDef(lineWidth) ? lineWidth : navWidth / 2
+                    const left = navLeft + (navWidth - width) / 2
+                    
+                    const lineStyle = {
+                      width: `${width}px`,
+                      backgroundColor: this.color,
+                      transform: `translateX(${left}px)`
+                    };
+                    
+                    if (shouldAnimate) {
+                      lineStyle.transitionDuration = `${this.duration}s`
+                    }
+                    
+                    if (isDef(lineHeight)) {
+                      const height = `${lineHeight}px`
+                      lineStyle.height = height
+                      lineStyle.borderRadius = height
+                    }
+                    
+                    this.lineStyle = lineStyle
+                })
+            }
         }
     }
 </script>
