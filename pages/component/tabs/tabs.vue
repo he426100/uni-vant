@@ -62,21 +62,6 @@
           </van-tabs>
         </demo-block>
 
-        <demo-block title="粘性布局">
-          <van-tabs
-            :active="active"
-            sticky
-          >
-            <van-tab
-              :title="'标签' + index"
-              v-for="index in tabs"
-              :key="index"
-            >
-              内容 {{ index }}
-            </van-tab>
-          </van-tabs>
-        </demo-block>
-
         <demo-block title="切换动画">
           <van-tabs
             animated
