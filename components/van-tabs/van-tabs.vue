@@ -17,7 +17,7 @@
             @click.native="onClick(index)"/>
         </view>
       </view>
-      <view ref="content" :class="contentClasses">
+      <view ref="content" :class="contentClasses" @touchstart="touchStart" @touchmove="touchMove" @touchend="onTouchEnd" @touchcancel="onTouchEnd">
           <view v-if="animated" :class="trackClasses" :style="trackStyle">
             <slot />
           </view>
@@ -30,6 +30,7 @@
     import { isDef } from '@/utils/van-utils/index.js'
     import { stringifyClass } from '@/utils/van-utils/class.js'
     import { stringifyStyle } from '@/utils/van-utils/style.js'
+    import Touch from '@/mixins/van-mixins/touch.js'
     import useBem from '@/utils/van-utils/use/bem.js'
     
     const bem = useBem('van-tabs')
@@ -38,6 +39,7 @@
         model: {
             prop: 'active'
         },
+        mixins: [ Touch ],
         props: {
             color: String,
             sticky: Boolean,
@@ -153,19 +155,22 @@
         
         watch: {
             active(val) {
-              this.curActive = val
+              if (val !== this.curActive) {
+                this.correctActive(val)
+              }
             },
             
             color(val) {
-                //console.log('color: ' + val)
+                this.setLine()
             },
             
             childrens(val) {
-                //console.log('childrens: ' + (val ? val.length : 0))
+                this.correctActive(this.curActive || this.active)
+                this.setLine()
             },
             
             curActive (val) {
-                //console.log('curActive: ' + val)
+                this.setLine()
             },
             
             sticky() {
@@ -189,24 +194,44 @@
         },
 
         methods: {
+            correctActive(active) {
+              active = +active
+              const exist = this.childrens.some(tab => tab.index === active)
+              const defaultActive = (this.childrens[0] || {}).index || 0
+              this.setCurActive(exist ? active : defaultActive)
+            },
+            setCurActive(active) {
+              active = this.findAvailableTab(active, active < this.curActive);
+              if (isDef(active) && active !== this.curActive) {
+                this.$emit('input', active)
+            
+                if (this.curActive !== null) {
+                  this.$emit('change', active, this.childrens[active].title)
+                }
+                this.curActive = active
+              }
+            },
+            findAvailableTab(active, reverse) {
+              const diff = reverse ? -1 : 1;
+              let index = active;
+            
+              while (index >= 0 && index < this.childrens.length) {
+                if (!this.childrens[index].disabled) {
+                  return index;
+                }
+                index += diff;
+              }
+            },
             onClick(index) {
-              const oldIndex = this.curActive
               const { title, disabled } = this.childrens[index]
               if (disabled) {
                 this.$emit('disabled', index, title)
               } else {
-                this.curActive = index
-                this.$emit('input', index)
+                this.setCurActive(index)
                 this.$emit('click', index, title)
-                if (oldIndex != index) {
-                    this.$emit('change', index, title) //先用input事件改变v-modal的值，再触发change事件
-                }
-                /* update nav */
-                const currentSize = this.navListSize[index]
-                currentSize && this.setLine(currentSize.left, currentSize.width)
               }
             },
-            getNavListSize(index) {
+            getNavListSize() {
                 //MP-WEIXIN || H5 || MP-QQ
                 uni.createSelectorQuery().in(this).selectAll('.van-tab').boundingClientRect((rects) => {
                     rects.forEach((rect) => {
@@ -214,16 +239,17 @@
                     })
                 }).exec();
                             
-                setTimeout(() => {
-                    this.navListSize[this.curActive] && this.setLine(this.navListSize[this.curActive].left, this.navListSize[this.curActive].width);
-                }, 100)
+                setTimeout(this.setLine, 100)
             },
-            setLine(navLeft, navWidth) {
+            setLine() {
                 const shouldAnimate = this.inited
                 this.$nextTick(() => {
+                    const currentSize = this.navListSize[this.curActive]
+                    if (!currentSize) return
+                    
                     const { lineWidth, lineHeight } = this
-                    const width = isDef(lineWidth) ? lineWidth : navWidth / 2
-                    const left = navLeft + (navWidth - width) / 2
+                    const width = isDef(lineWidth) ? lineWidth : currentSize.width / 2
+                    const left = currentSize.left + (currentSize.width - width) / 2
                     
                     const lineStyle = {
                       width: `${width}px`,
@@ -243,6 +269,22 @@
                     
                     this.lineStyle = lineStyle
                 })
+            },
+            // watch swipe touch end
+            onTouchEnd(e) {
+              if (!this.swipeable) return
+              const { direction, deltaX, curActive } = this;
+              const minSwipeDistance = 50;
+            
+              /* istanbul ignore else */
+              if (direction === 'horizontal' && this.offsetX >= minSwipeDistance) {
+                /* istanbul ignore else */
+                if (deltaX > 0 && curActive !== 0) {
+                    this.curActive --
+                } else if (deltaX < 0 && curActive !== this.childrens.length - 1) {
+                    this.curActive ++
+                }
+              }
             }
         }
     }
