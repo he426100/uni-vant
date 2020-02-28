@@ -280,9 +280,9 @@
               if (direction === 'horizontal' && this.offsetX >= minSwipeDistance) {
                 /* istanbul ignore else */
                 if (deltaX > 0 && curActive !== 0) {
-                    this.curActive --
+                    this.setCurActive(curActive - 1)
                 } else if (deltaX < 0 && curActive !== this.childrens.length - 1) {
-                    this.curActive ++
+                    this.setCurActive(curActive + 1)
                 }
               }
             }
