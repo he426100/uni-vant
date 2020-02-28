@@ -77,20 +77,6 @@
           </van-tabs>
         </demo-block>
 
-        <demo-block title="自定义标签">
-          <van-tabs :active="active">
-            <van-tab
-              v-for="index in 2"
-              :key="index"
-            >
-              <view slot="title">
-                <van-icon name="more-o" />标签
-              </view>
-              内容 {{ index }}
-            </van-tab>
-          </van-tabs>
-        </demo-block>
-
         <demo-block title="切换动画">
           <van-tabs
             animated
